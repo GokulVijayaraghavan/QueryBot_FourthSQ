@@ -1,0 +1,15 @@
+Track Your Package
+You can find tracking information in your order details. If an order includes multiple items, each may have separate delivery dates and tracking information.
+
+Go to Your Orders.
+Go to the order you want to track.
+Select Track Package next to your order.
+Select See all updates to view delivery updates.
+Depending on the shipping method you chose, it's possible that the tracking information might not be visible immediately.
+
+Items sent by third-party sellers from the Amazon Marketplace can in some cases also be tracked. It's possible if the seller has shared this information with Amazon and you have chosen a traceable shipping method.
+
+Note: Some packages, such as standard international deliveries, aren't trackable. Other reasons why tracking information might not be available are listed on Missing Tracking Information.
+If the estimated delivery date for your package has passed and your tracking information hasn't changed, allow an additional day or two for the package to be delivered. Read more about our recommended actions on Late Deliveries.
+
+If your package shows as delivered but you haven't yet received it, go to Find a Missing Package that Shows as Delivered to find out which steps you can take.

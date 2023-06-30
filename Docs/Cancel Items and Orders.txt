@@ -1,0 +1,17 @@
+Cancel Items and Orders
+You can cancel physical items or orders that haven't entered the shipping process yet.
+
+Go to Your Orders and select the order you want to cancel.
+Select Cancel items
+Note: For third-party seller orders, select Request Cancellation. If Request Cancellation is no longer available, contact the seller for instructions. Go to Contact Third-Party Sellers.
+Select the check box of the item that you want to remove from the order. To cancel the entire order, select all of the items.
+Select Cancel selected items in this order when finished.
+Confirm that your order is cancelled
+
+After submitting the cancellation, you'll receive a confirmation message on the screen. You'll also receive a message in the Message Center in Your Account.
+
+Cancel items is not available
+
+If Cancel items is not available, Amazon may have already shipped it. Go to Your Orders and select Track package, and then Cancel this delivery.
+
+If this option is not available, refuse the package or return it using our Online Returns Center.
