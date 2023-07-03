@@ -1,14 +1,13 @@
 import os
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS,cross_origin
-
 from pymongo import MongoClient
-
-from langchain import HuggingFaceHub, embeddings, LLMChain
+from langchain import HuggingFaceHub, embeddings
 from langchain.document_loaders import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
-from langchain.prompts.chat import ( ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate)
+from langchain.chains.question_answering import load_qa_chain
+from transformers import pipeline
 
 app = Flask(__name__)
 CORS(app, resources={r"*": {"origins": "*"}})
@@ -29,46 +28,25 @@ def find_docs(db, query):
     num = 3
     matching_docs = db.similarity_search(query, num)
     print(matching_docs)
-    return matching_docs
+    extracted_text = ""
+    for document in matching_docs:
+        extracted_text += document.page_content
+    return extracted_text
 
 def save_query_answer(query, answer):
     query_answer_data = {"query": query, "answer": answer}
     collection.insert_one(query_answer_data)
 
-def answer(query,matching_docs):
-    template = """
-        You are a helpful assistant that that can answer questions
-        based on :  {docs}
-        Only use the factual information from the transcript to answer the question.
-        Your answers should be verbose and detailed.
-        """
-    print(template)
-    docs_page_content = " ".join([d.page_content for d in matching_docs])
-
-    system_message_prompt = SystemMessagePromptTemplate.from_template(template)
-
-    # Human question prompt
-    human_template = "Answer the following question: {question}"
-    human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
-
-    chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
-
-    chain = LLMChain(llm=chat, prompt=chat_prompt)
-
-    response = chain.run(question=query, docs=docs_page_content)
-    response = response.replace("\n", "")
-    return response, docs
-
-
 @app.route('/api/query', methods=['POST'])
 def process_query():
     query = request.json['query']
     matching_docs = find_docs(db, query)
-    response, docs = answer(query, matching_docs)
-    print(response)
-    save_query_answer(query, response)
+    answer = (summarizer(matching_docs, max_length=130, min_length=30, do_sample=False))
+    answer = answer[0]['summary_text']
+    print(answer)
+    save_query_answer(query, answer)
     print("returning answer")
-    return(jsonify({"answer": response}))
+    return(jsonify({"answer": answer}))
     
 @app.route("/signup", methods=["POST"])
 @cross_origin()
@@ -119,9 +97,10 @@ if __name__ == "__main__":
     db = client['QA']
     collection = db['QA']
     users = db["users"]
-    chat = HuggingFaceHub(repo_id="google/flan-t5-large", model_kwargs={"temperature":1})
     embedding = embeddings.HuggingFaceHubEmbeddings()
     documents = load_docs(directory)
     docs = split_docs(documents)
     db = Chroma.from_documents(docs, embedding)
+    summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+
     app.run(debug=True)
