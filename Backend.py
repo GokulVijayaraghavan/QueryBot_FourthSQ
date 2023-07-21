@@ -13,8 +13,6 @@ from langchain.prompts.chat import ( ChatPromptTemplate, SystemMessagePromptTemp
 app = Flask(__name__)
 CORS(app, resources={r"*": {"origins": "*"}})
 app.secret_key = "Key"
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = "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"
-
 def load_docs(directory):
     loader = DirectoryLoader(directory)
     documents = loader.load()
