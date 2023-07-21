@@ -38,8 +38,6 @@ documents = load_docs(directory)
 len(documents)
 
 import os
-
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = "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"
 embeddings = HuggingFaceHubEmbeddings()
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
